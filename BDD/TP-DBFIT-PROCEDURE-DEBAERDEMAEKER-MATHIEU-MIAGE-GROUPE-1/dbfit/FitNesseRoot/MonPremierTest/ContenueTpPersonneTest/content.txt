@@ -1,0 +1,11 @@
+#indication bibliotheques y compris driver jdbc
+!path lib/*.jar
+#connection à une base Oracle
+!|dbfit.OracleTest|
+!|Connect|oracle.fil.univ-lille1.fr:1521|debaerdemaeker|ENC(Joo4/Jp12McepfjR7sWp5A==)|filora|
+!|query|select * from TP_Personne|
+|id|prenom|
+|2|Guillaume|
+|3|Jamel|
+|4|ErreurPrenom|
+|6|EnTrop|

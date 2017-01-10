@@ -1,0 +1,42 @@
+20 000 produit o à 15€/unité
+
+CV : 2€
+CF : 210 000 €
+
+CV : 11 €
+CF : 30 000 €
+
+20 000 * 15 = 300 000 €
+
+CA = 300 000
+- CV = 40 000
+resultat = 300 000 - 40 000 = 260 000(MCV) - 210 000 (CF) = 50 000 (resultat)
+
+TMCV = MCV / CA * 100 = 260 000 / 300 000 * 100 = 0.8067 = 80 %
+
+SR = CF / TMCV = 210 000 / 0,80 = 262 500 €
+
+MS = CA - SR = 300 000 - 262 500 = 37 500 €
+
+Is = MS / CA = 0.125 -> ça veut dire que si on perd plus de 12% de notre chiffre d'affaire, c'est qu'on est dans la merde.
+
+DATE POINT MORT : SR / CA * 360 = 262 500 / 300 000 * 360 = 293 jour
+
+Levier : L0 = 1/Is = 1 / 0.125 = 8%
+
+Dans une activité si CV augmente et CF diminu => activité moins risquée
+
+
+Exo 2 :
+
+Prix Vente = 48 €
+Charge vente unitaire = 36 €
+CF = 200 000 €
+
+PV - CV = 12€
+
+TMCV = 12x / 48x  * 100 = 12/48 * 100 = 25%
+
+SR = 200 000 / 0.25 = 800 000
+
+

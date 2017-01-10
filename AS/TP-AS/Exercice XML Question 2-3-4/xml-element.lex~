@@ -1,0 +1,14 @@
+import java_cup.runtime.*;
+
+%%
+%unicode
+%cup
+%ignorecase
+%eofval{
+    return new Symbol(sym.EOF);
+%eofval}
+%yylexthrow{
+    LexicalException
+%yylexthrow}
+%line
+%%

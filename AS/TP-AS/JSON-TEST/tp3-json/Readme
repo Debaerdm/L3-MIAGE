@@ -1,0 +1,3 @@
+Pour lancer Q1 aller dans le dossier Q1-json-lex et faite : sh launch.sh
+Pour lancer Q2 faite la commande donner en cours : ant -v Q2-json-ad
+

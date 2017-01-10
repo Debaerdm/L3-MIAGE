@@ -1,0 +1,9 @@
+#indication bibliotheques y compris driver jdbc
+!path lib/*.jar
+#connection à une base Oracle
+!|dbfit.OracleTest|
+!|Connect|oracle.fil.univ-lille1.fr:1521|debaerdemaeker|ENC(Joo4/Jp12McepfjR7sWp5A==)|filora|
+#test simple : on verifie qu'il y a 4 personnes dans la table Personne
+!|query| select count(*) as nb from TP_Personne|
+|nb|
+|4|

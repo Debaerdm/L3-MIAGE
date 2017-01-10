@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE formules SYSTEM "D:\Documents\L3-Miage\XML\Exo1-DTD.dtd">
+<formules>
+	<constantes>
+		<const nom="A" valeur="1"/>
+		<const nom="B" valeur="7"/>
+		<const nom="C" valeur="50"/>
+	</constantes>
+	<exps>
+		<exp nom="exp1">
+			<op symbole="mult">
+				<op symbole="plus">
+					<var nom="A"/>
+					<var nom="B"/>
+				</op>
+				<op symbole="moins">
+					<var nom="A"/>
+					<var nom="B"/>
+				</op>
+			</op>
+		</exp>
+		<exp nom="exp2">
+			<op symbole="mult">
+				<var nom="A"/>
+				<op symbole="moins">
+					<var nom="C"/>
+						<op symbole="moins">
+							<var nom="A"/>
+							<var nom="B"/>
+						</op>
+				</op>
+			</op>
+		</exp>
+		<exp nom="exp3">
+			<op symbole="mult">
+				<var nom="C"></var>
+					<op symbole="mult">
+						<var nom="C"></var>
+							<op symbole="div">
+								<var nom="B"></var>
+								<var nom="A"></var>
+							</op>
+					</op>
+			</op>
+		</exp>
+	</exps>
+</formules>

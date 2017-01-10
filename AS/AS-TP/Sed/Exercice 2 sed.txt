@@ -1,0 +1,6 @@
+Exercice 2:
+1) cat germinal.txt | sed -e 's/[[:punct:]]/ /g'
+2) cat germinal.txt | sed -e 's/ /\n/g'
+3) cat germinal.txt | sed -e 's/ /\n/g' | tr -s '\n' | sort | uniq 
+
+

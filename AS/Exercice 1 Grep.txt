@@ -1,0 +1,8 @@
+Exercice 1 :
+1) egrep '^A' poesies.txt --color
+2) egrep '^A|t$' poesies.txt --color
+3) egrep -i '^[aeyuio]' poesies.txt --color
+4) egrep 'a.*e.*i.*o.*u' poesies.txt --color
+5) egrep 'a[^eyuio]*e[^ayuio]*i[^aeyuo]*o[^aeyui]*u[^aeyio]' poesies.txt --color6) egrep -w '\w*c\w*i\w*' poesies.txt --color
+7) egrep -w '\w{9}\w*' poesies.txt --color
+

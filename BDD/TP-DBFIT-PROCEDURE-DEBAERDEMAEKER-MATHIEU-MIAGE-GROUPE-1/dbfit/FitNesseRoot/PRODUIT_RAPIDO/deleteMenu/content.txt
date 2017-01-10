@@ -1,0 +1,26 @@
+#######
+#indication bibliotheques y compris driver jdbc
+!path lib/*.jar
+#connection à une base Oracle
+!|dbfit.OracleTest|
+!|Connect|oracle.fil.univ-lille1.fr:1521|debaerdemaeker|ENC(Joo4/Jp12McepfjR7sWp5A==)|filora|
+
+!|execute procedure|PAQ_PRODUITS.addMenu|
+|promo|nom|prix|taille|
+|blablabla|pomme|1|petit|
+
+!|query|select p_ref as ref from produit_rapido where nom='pomme'|
+|ref?|
+|>>simple|
+
+!|query|select count(*) as nb_produit from MENU|
+|nb_produit|
+|1|
+
+!|execute procedure|PAQ_PRODUITS.removeMenu|
+|m_ref|
+|<<simple|
+
+!|query|select count(*) as nb_produit from MENU|
+|nb_produit|
+|0|

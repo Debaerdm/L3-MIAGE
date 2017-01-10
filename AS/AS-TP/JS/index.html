@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title> Verification de mail</title>
+	</head>
+	<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	
+	<h1> Vérification d'email </h1>
+	
+	<form>
+		<p> Entrer votre adresse mail : </p>
+		<input id='email'>
+		<button type='submit' id='validate'> Valider ! </button>
+	</form>
+	
+	<h2 id='result'>Pas de résultat !</h2>
+	
+	<script type="text/javascript">
+	
+	function validationEmail(email) {
+		var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/ ///(\S*)!@.!@\S+@?\S+!@\.!@\S+!@/;
+		return regex.test(email)
+	}
+	
+	function validate() {
+		$("#result").text("Pas de résultat !");
+		var email = $("#email").val();
+		if (validationEmail(email)) {
+			$("#result").text(email + " est valide.");
+			$("#result").css("color", "green");
+		} else {
+			$("#result").text(email + " n'est pas valide");
+			$("#result").css("color", "red");
+		}
+		
+		return false;
+	}
+	
+	$("form").bind("submit", validate);
+
+	</script>
+	</body> 
+</html>

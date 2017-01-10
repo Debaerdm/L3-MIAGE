@@ -1,0 +1,42 @@
+~ Readme                                                            -*-Text-*-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~ $Id: Readme,v 1.1 1999-07-16 15:39:27 marquet Exp $
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~
+
+Dans ce repertoire se trouvent les fichiers implementant le systeme de
+fichier vu en TD. Un disque (ou volume) sera implemente par un fichier
+UNIX. Deux executables sont produits par le makefile : fs et shell.
+
+La commande ffs permet de créer un système de fichiers, elle
+possède trois arguments :
+  o le nom du volume, qui sera aussi le nom du fichier Unix simulant
+    ce volume ;  
+  o le nombre de blocs du volume (y compris le bloc de boot et le
+    super bloc) ;
+  o le nombre de i-noeuds.
+Elle initialise le super bloc, la table des i-noeuds et crée le
+répertoire racine.
+
+La commande shell est un interpréteur de commandes (très) rudimentaire
+permettant l'exploitation d'un système de fichiers.  Elle possède un
+paramètre optionnel qui est le nom du volume à monter. Si cet argument
+n'est pas donné, c'est par défaut le volume root qui est monté. La
+commande help donne un aperçu des commandes disponibles. On termine
+l'interpréteur avec ^D.
+
+Dans un premier temps, créer un système de fichiers avec la commande
+ffs et manipulez le avec la commande shell.
+
+Le but de ce TP est de reconstruire quelques-unes des fonctions de fs.c
+Dans ce but, le fichier fs.c a ete separes en deux parties : 
+  o fs.c conserve l'ensemble des fonctions de fs.c que vous n'avez pas
+    a reecrire
+  o fstp.c est constitue des fonctions du fs.c originel que vous devez
+    reconstruire.  
+
+Le fichier fstp.o est un fichier objet signe du nom des enseignants
+qui contient les fonctions à développer dans fstp.c
+
+fstp.c contient un squelette des fonctions a reconstruire. 
+

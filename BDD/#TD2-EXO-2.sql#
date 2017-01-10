@@ -1,0 +1,36 @@
+select fi_titre from TD2_FILM
+where FI_ANNEE = '2014';
+
+select TD2_CINEMA.ci_nom, TD2_SEANCE.SE_HORAIRE from TD2_SEANCE
+inner join TD2_CINEMA
+on TD2_SEANCE.CI_REF = TD2_CINEMA.CI_REF
+inner join TD2_FILM
+on TD2_SEANCE.FI_REF = TD2_FILM.FI_REF
+where fi_titre = 'Gravity';
+
+select count(TD2_ASSISTE.SE_REF) from TD2_ASSISTE
+where TD2_ASSISTE.SE_REF = 'se10';
+
+select AVG(count(SP_REF)) from TD2_ASSISTE
+group by TD2_ASSISTE.SE_REF;
+
+select TD2_SPECTATEUR.SP_REF, SP_NOM, SP_PRENOM, COUNT(TD2_ASSISTE.SE_REF) from TD2_SPECTATEUR
+left join TD2_ASSISTE on TD2_SPECTATEUR.SP_REF = TD2_ASSISTE.SP_REF
+group by TD2_SPECTATEUR.SP_REF, SP_NOM, SP_PRENOM;
+
+select TD2_SPECTATEUR.SP_REF, SP_NOM, SP_PRENOM from TD2_SPECTATEUR
+inner join TD2_ASSISTE on TD2_SPECTATEUR.SP_REF = TD2_ASSISTE.SP_REF
+where SE_AVIS = 'mauvais'
+group by TD2_SPECTATEUR.SP_REF, SP_NOM, SP_PRENOM;
+
+Select fi_titre, count(*) as nb FROM TD2_FILM Natural join TD2_SEANCE natural join TD2_ASSISTE  WHERE SE_AVIS = 'tres bon'
+group by fi_titre having count(*) >= all (Select count(*) FROM TD2_FILM Natural join TD2_SEANCE natural join TD2_ASSISTE  WHERE SE_AVIS = 'tres bon'
+group by fi_titre);
+
+-- Question 2.4
+alter table TD2_SPECTATEUR modify SP_MAIL varchar2(40);
+insert into TD2_SPECTATEUR values (13, 'Debaerdemaeker', 'Mathieu', 'mathieu.debaerdemaeker@gmail.com');
+
+delete cascade from TD2_SEANCE where SE_HORAIRE < '01/07/2013';
+
+update TD2_SPECTATEUR set SP_NOM = 'Breton' where SP_NOM = 'Normand'

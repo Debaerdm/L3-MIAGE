@@ -1,0 +1,6 @@
+Exercice 3 :
+1) cat employees.tsv | sed -e 's/\t/<\/td><td>/g' | sed -e 's/^/<tr>/g' | sed -e 's/$/<\/td><\/tr>/g' > output
+2) cat employees.tsv | sed -e 's/\t/<\/td><td>/g' | sed -e 's/^/<tr>/g' | sed -e 's/$/<\/td><\/tr>/g' | sed -e '1i <table>' | sed -e '$a <\/table>' > test5
+3) cat employees.tsv | sed -e 's/\t/<\/td><td>/g' | sed -e 's/^/<tr><td>/g' | sed -e 's/$/<\/td><\/tr>/g' | sed -e '1i <html><head><style>table, th, td { border: 1px solid black; } table { border-collapse: collapse; } td,th {padding: 5px;}<\/style><\/head><body><table><tr><th>Name<\/th><th>Position<\/th><th>Office<\/th><th>Age<\/th><th>Start date<\/th><th>Salary<\/th><\/tr>' | sed -e '$a <\/table><\/body><\/html>' > employees.html
+
+

@@ -1,0 +1,49 @@
+~ Readme                                                            -*-Text-*-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~ $Id: Readme,v 1.1.1.1 2004/02/24 21:40:03 sedoglav Exp $
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~
+
+Ce TP consiste à écrire les commandes df et fsck 
+
+La commande df (disk free space) affiche l'état d'utilisation du
+volume. En particulier, elle reporte le pourcentage de blocs occupés
+et le pourcentage d'inoeuds occupés sur le système de fichiers, par
+exemple selon le format suivant :
+
+> df 
+64-blocs utilises  libres  capacite
+120      18	   102	   15%
+inoeuds  Iutilises Ilibres Icapacite
+20       6         14      30%
+
+La commande fsck (file system check) vérifie l'intégité du système de
+fichiers. Dans un permier temps, on suppose que les informations
+contenues dan les inoeuds sont correctes et on s'attache, dans ce
+contexte, à vérifier l'intégrité des informations de blocs. Elle teste
+en particulier que tout bloc est soit libre soit alloué à un unique
+inoeud.  La commande fsck produit son résultat sous forme d'un
+message, par exemple :
+
+> fsck 
+Blocs ni libres ni affectes a un inoeud :
+	113 
+Blocs libres et affectes a un inoeud (#bloc (inoeud...)) : 
+	111 (12,14), 112 (12,14) 
+Blocs affectes a plusieurs inoeuds (#bloc (inoeud...))
+	108 (12, 14), 109 (12,14), 110 (12,14)
+
+Vous trouverez une commande mkbadbloc qui construit un système de
+fichiers nommé badbloc. Ce système de fichiers badbloc comporte
+plusieurs inconsistances au niveau des blocs. Il sera utilisé pour
+tester votre commande fsck.
+
+Vous disposez de l'ensemble des .h et .o du système de fichiers. Le
+shell a été modifié pour accepter deux nouvelles commandes : df et
+fsck ! Dans le fichier shell.c, les fonctions implantant ces commandes
+appellent respectivement les fonctions 
+	void fs_df (void)  
+et	void fs_fsck (void)
+
+Ces sont ces deux fonctions qui doivent être écrites. Le fichier tp.c
+contient un squelette des fonctions à construire.  

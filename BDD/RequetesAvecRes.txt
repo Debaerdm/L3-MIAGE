@@ -1,0 +1,73 @@
+--les requete
+
+/* Quels sont les films de 2014 ?
+*/
+
+/* Ou a-t-on pu voir le film `gravity' ? (Donner les noms des cinémas et les horaires des séances.)
+=>
+METROPOLE	21/04/2014	17:00
+ODEON		26/04/2013	18:30
+GAUMONT	24/04/2013	21:00
+BASTILLE	22/04/2013	20:30
+*/
+
+
+/*Combien de spectateurs interrogés sont allés a la séance de
+ référence se10 ? => 3
+*/
+
+
+/* Quel est la moyenne du nombre de spectateurs interrogés par séance ? => 2,91
+*/
+
+/* Donner la liste des spectateurs avec le nombre de séances auxquelles ils  sont allés.
+ => ne pas oublier sp20 qui n'a rien vu
+*/
+
+/* Quels sont les noms des spectateurs qui ont trouvé mauvais tous les films qu'ils ont vus ?
+=>
+sp1	Breton	Michel
+sp8	Schmid	Damien
+*/
+
+/* Quel est le titre du film (ou des films) qui a eu le plus d'avis très bon, toutes séances confondues ? 
+=> fi3	mommy
+*/
+
+/*Pour chaque cinéma, son nom et le titre du (ou des) film  qui a eu le plus d'avis très bon, toutes séances confondues dans ce cinéma?
+=> 
+ci2	GAUMONT	fi2	gone girl
+ci1	METROPOLE	fi3	mommy
+ci4	ODEON		fi3	mommy
+ci3	BASTILLE	fi2	gone girl
+*/
+
+/*Quels sont les tuples ( référence, nom et prénom d'un spectateur, et titre d'un  film) pour lesquels le spectateur a vu plusieurs fois le film mais n'a pas toujours donné le même avis.
+=>
+sp6	Pele	Marie	mommy
+sp3	Kante	Karamoko	gone girl
+sp10	Ramos	Irene	mommy
+*/
+
+/*Donnez, pour chaque film, son titre, le nombre d'avis mauvais, le nombre d'avis moyen,le nombre d'avis pas mal, le nombre d'avis tres bon.
+=>
+Gravity	3	1	3	2
+mommy		0	2	1	7
+gone girl	1	1	6	4
+*/
+
+/*On considère qu'un film est un succès si au moins 80\%  des avis sont tres bon ou bien pas mal. Quels sont les titres des films à succès ?
+=>
+fi3	mommy	
+fi2	gone girl
+*/
+
+*/On voudrait comparer les gôuts des spectateurs à Lille et à Paris et pour cela, avoir une liste :
+titre de film, nb d'avis tres bon à Lille / nb d'avis à Lille, nb d'avis tres bon à Paris / nb d'avis à Paris. Proposez une solution.
+=>
+
+film		Lille	Paris
+Gravity	0/6	2/4
+gone girl	1/3	3/9
+mommy		1/4	6/6
+*/

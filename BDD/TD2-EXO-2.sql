@@ -1,0 +1,26 @@
+-- 1
+select fi_titre from TD2_FILM
+where FI_ANNEE = '2014';
+
+-- 2
+select TD2_CINEMA.ci_nom, TD2_SEANCE.SE_HORAIRE from TD2_SEANCE
+inner join TD2_CINEMA
+on TD2_SEANCE.CI_REF = TD2_CINEMA.CI_REF
+inner join TD2_FILM
+on TD2_SEANCE.FI_REF = TD2_FILM.FI_REF
+where fi_titre = 'Gravity';
+
+-- 3
+select count(TD2_ASSISTE.SE_REF) from TD2_ASSISTE
+where TD2_ASSISTE.SE_REF = 'se10';
+
+-- 4
+select AVG(count(SP_REF)) from TD2_ASSISTE
+group by TD2_ASSISTE.SE_REF;
+
+-- 5
+select TD2_SPECTATEUR.SP_REF, SP_NOM, SP_PRENOM, COUNT(TD2_ASSISTE.SE_REF) from TD2_SPECTATEUR
+left join TD2_ASSISTE on TD2_SPECTATEUR.SP_REF = TD2_ASSISTE.SP_REF
+group by TD2_SPECTATEUR.SP_REF, SP_NOM, SP_PRENOM;
+
+
