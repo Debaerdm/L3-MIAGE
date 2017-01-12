@@ -45,64 +45,66 @@ public class TchatReceiveUDP extends Thread {
 	public void run() {
 		int port = 7654;
 		String IPMultiCast = "224.0.0.1";
-		
-		MulticastSocket multicastSocket = null;
-		
-		try {
-			byte[] buffer = new byte[1024];
-			multicastSocket = new MulticastSocket(port);
+
+		byte[] buffer = new byte[1024];
+		try (MulticastSocket multicastSocket = new MulticastSocket(port)) {
 			multicastSocket.joinGroup(InetAddress.getByName(IPMultiCast));
-			
-			while(true) {
+
+			while (true) {
 				DatagramPacket data = new DatagramPacket(buffer, buffer.length);
 				multicastSocket.receive(data);
 				String line = new String(data.getData(), data.getOffset(), data.getLength());
-				
-				
-				// Permet de se logger et l'enregistrer dans le fichier si il n'existe pas et dans le hashmap
-				if (line.startsWith("/login ")) {
-					String tmp = line.substring("/login ".length(), line.length());
-					
-					String hostAdress = data.getAddress().getHostAddress();
-					
-					if (!users.containsKey(hostAdress)) {
-						users.put(hostAdress, tmp);
-						FileOutputStream out = new FileOutputStream(PROPERTIES_FILES);
-						this.properties.setProperty(hostAdress, tmp);
-						this.properties.store(out, null);
-						out.close();
-						
-						
-						System.out.println(tmp+" logged");
-					} else {
-						System.out.println(tmp+" already logged");
-					}
-				} 
-				
-				// Permet de changer son login
-				if(line.startsWith("/rlogin ")) {
-					String tmp = line.substring("/rlogin ".length(), line.length());
-					
-					String hostAdress = data.getAddress().getHostAddress();
-					
-					if (users.containsKey(hostAdress)) {
-						users.put(hostAdress, tmp);
-						FileOutputStream out = new FileOutputStream(PROPERTIES_FILES);
-						this.properties.setProperty(hostAdress, tmp);
-						this.properties.store(out, null);
-						out.close();
-					}
-				}
-				
+
+				this.login(line, data);
+				this.relogin(line, data);
+
 				String hostAdress = data.getAddress().getHostAddress();
-				
-				System.out.println(((users.containsKey(hostAdress))? users.get(hostAdress): "Unknow")+" : "+new String(data.getData(), data.getOffset(), data.getLength()));
-				
+
+				System.out.println(((users.containsKey(hostAdress)) ? users.get(hostAdress) : "Unknow") + " : " + new String(data.getData(), data.getOffset(), data.getLength()));
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			multicastSocket.close();
 		}
+	}
+
+	public void login(String line, DatagramPacket data) throws IOException{
+		// Permet de se logger et l'enregistrer dans le fichier si il n'existe pas et dans le hashmap
+		if (line.startsWith("/login ")) {
+			String tmp = line.substring("/login ".length(), line.length());
+
+			String hostAdress = data.getAddress().getHostAddress();
+
+			if (!users.containsKey(hostAdress)) {
+				users.put(hostAdress, tmp);
+				FileOutputStream out = new FileOutputStream(PROPERTIES_FILES);
+				this.properties.setProperty(hostAdress, tmp);
+				this.properties.store(out, null);
+				out.close();
+
+
+				System.out.println(tmp+" logged");
+			} else {
+				System.out.println(tmp+" already logged");
+			}
+		}
+	}
+
+	public void relogin(String line, DatagramPacket data) throws IOException {
+		// Permet de changer son login
+		if(line.startsWith("/rlogin ")) {
+			String tmp = line.substring("/rlogin ".length(), line.length());
+
+			String hostAdress = data.getAddress().getHostAddress();
+
+			if (users.containsKey(hostAdress)) {
+				users.put(hostAdress, tmp);
+				FileOutputStream out = new FileOutputStream(PROPERTIES_FILES);
+				this.properties.setProperty(hostAdress, tmp);
+				this.properties.store(out, null);
+				out.close();
+			}
+		}
+
 	}
 }
