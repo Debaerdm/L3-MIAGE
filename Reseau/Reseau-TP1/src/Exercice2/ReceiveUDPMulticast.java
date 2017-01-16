@@ -38,10 +38,9 @@ public class ReceiveUDPMulticast {
 			e.printStackTrace();
 		} finally {
 			try {
-				multicastSocket.leaveGroup(InetAddress.getByName(IPMultiCast));
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (multicastSocket != null) {
+					multicastSocket.leaveGroup(InetAddress.getByName(IPMultiCast));
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

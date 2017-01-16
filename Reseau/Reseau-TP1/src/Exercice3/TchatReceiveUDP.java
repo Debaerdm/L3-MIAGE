@@ -1,6 +1,5 @@
 package Exercice3;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -15,14 +14,13 @@ public class TchatReceiveUDP extends Thread {
 	// Permet de gerer les utilisateur par le hostAddress et leur nom
 	private Map<String, String> users = new HashMap<>();
 	private Properties properties;
-	private FileInputStream fileInputStream;
 	private static final String PROPERTIES_FILES = "ressource/TchatProperties.properties";
 	
-	public TchatReceiveUDP() {
+	TchatReceiveUDP() {
 		// Properties pour garder les données
 		this.properties = new Properties();
 		try {
-			fileInputStream = new FileInputStream(PROPERTIES_FILES);
+			FileInputStream fileInputStream = new FileInputStream(PROPERTIES_FILES);
 			// On charge le properties
 			this.properties.load(fileInputStream);
 			fileInputStream.close();
@@ -32,11 +30,7 @@ public class TchatReceiveUDP extends Thread {
 				String login = this.properties.getProperty(key);
 				this.users.put(key, login);
 			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -68,7 +62,7 @@ public class TchatReceiveUDP extends Thread {
 		}
 	}
 
-	public void login(String line, DatagramPacket data) throws IOException{
+	private void login(String line, DatagramPacket data) throws IOException{
 		// Permet de se logger et l'enregistrer dans le fichier si il n'existe pas et dans le hashmap
 		if (line.startsWith("/login ")) {
 			String tmp = line.substring("/login ".length(), line.length());
@@ -90,7 +84,7 @@ public class TchatReceiveUDP extends Thread {
 		}
 	}
 
-	public void relogin(String line, DatagramPacket data) throws IOException {
+	private void relogin(String line, DatagramPacket data) throws IOException {
 		// Permet de changer son login
 		if(line.startsWith("/rlogin ")) {
 			String tmp = line.substring("/rlogin ".length(), line.length());

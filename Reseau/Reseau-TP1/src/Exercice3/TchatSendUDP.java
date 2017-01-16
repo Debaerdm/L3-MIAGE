@@ -11,45 +11,39 @@ public class TchatSendUDP extends Thread {
 	public void run() {
 		int port = 7654;
 		String IPMultiCast = "224.0.0.1";
-		Scanner args = new Scanner(System.in);
-		
-		DatagramSocket datagramSocket = null;
-		
-		try {
-			
-			datagramSocket = new DatagramSocket();
-			
+
+		try (Scanner args = new Scanner(System.in); DatagramSocket datagramSocket = new DatagramSocket()) {
 			InetAddress address = InetAddress.getByName(IPMultiCast);
-			
-			while(true) {
+
+			while (true) {
 				byte[] bs = args.nextLine().getBytes();
-				
+
 				// Les commandes clients
-				if (new String(bs).equals("/help")) {
-					StringBuilder builder = new StringBuilder();
-					builder.append("The folowing command : \n");
-					builder.append("/login <login> : login the actually user in the properties.\n");
-					builder.append("/rlogin <login> : modify the login of user.\n");
-					builder.append("/exit : exit the program.\n");
-					System.out.println(builder);
-				} else if (new String(bs).equals("/exit")) {
-					System.out.println("You have exit the chat");
-					System.exit(0);
-				} else {
-					
-					// Pour ecrire et envoyer vers le serveur
-					DatagramPacket datagramPacket = new DatagramPacket(bs, bs.length);
-					datagramPacket.setAddress(address);
-					datagramPacket.setPort(port);
-				
-					datagramSocket.send(datagramPacket);
+				switch (new String(bs)) {
+					case "/help":
+						StringBuilder builder = new StringBuilder();
+						builder.append("The folowing command : \n");
+						builder.append("/login <login> : login the actually user in the properties.\n");
+						builder.append("/rlogin <login> : modify the login of user.\n");
+						builder.append("/exit : exit the program.\n");
+						System.out.println(builder);
+						break;
+					case "/exit":
+						System.out.println("You have exit the chat");
+						System.exit(0);
+					default:
+
+						// Pour ecrire et envoyer vers le serveur
+						DatagramPacket datagramPacket = new DatagramPacket(bs, bs.length);
+						datagramPacket.setAddress(address);
+						datagramPacket.setPort(port);
+
+						datagramSocket.send(datagramPacket);
+						break;
 				}
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
-			args.close();
-			datagramSocket.close();
+			e.printStackTrace();
 		}
 	}
 	
