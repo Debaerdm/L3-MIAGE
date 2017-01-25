@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE formules SYSTEM "expMath.dtd">
+<formules>
+<constantes>
+<const nom="A" valeur="1"/>
+<const nom="B" valeur="7"/>
+<const nom="C" valeur="50"/>
+<exp nom="exp4">
+<op symbole="mult">
+<op symbole="mult">
+<var nom="X"/>
+<var nom="X"/>
+</op>
+<var nom="X"/>
+</op>
+</exp>
+<const nom="X" valeur="1"/>
+</constantes>
+<exps>
+<exp nom="exp1">
+<op symbole="mult">
+<op symbole="plus">
+<var nom="A"/>
+<var nom="B"/>
+</op>
+<op symbole="moins">
+<var nom="A"/>
+<var nom="B"/>
+</op>
+</op>
+</exp>
+<exp nom="exp2">
+<op symbole="mult">
+<var nom="A"/>
+<op symbole="moins">
+<var nom="C"/>
+<op symbole="moins">
+<var nom="A"/>
+<var nom="B"/>
+</op>
+</op>
+</op>
+</exp>
+<exp nom="exp3">
+<op symbole="mult">
+<var nom="C"/>
+<op symbole="mult">
+<var nom="C"/>
+<op symbole="div">
+<var nom="B"/>
+<var nom="A"/>
+</op>
+</op>
+</op>
+</exp>
+</exps>
+</formules>

@@ -1,0 +1,8 @@
+(:count(//pdv):)
+(: count(//pdv/prix[@nom="E10"]) :)
+(://pdv[lower-case(ville/text()) = "lille"]/prix[@nom="Gazole"]/@valeur :)
+(: //pdv[lower-case(ville/text()) = "lille"][services/service = "Station de gonflage"]/adresse :)
+(://pdv[//service = "Boutique alimentaire" and //service = "Toilettes publiques"]/ville:)
+(:min(//prix[@nom="SP95"]/@valeur):)
+(://pdv[prix/@valeur = min(//prix[@nom="SP95"]/@valeur)]/adresse:)
+(://pdv[prix/@valeur <= (min(//prix[@nom="SP95"]/@valeur) * 1.1)]/adresse:)

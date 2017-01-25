@@ -1,0 +1,11 @@
+Exercice 2 : 
+
+1) Dans un premier temps on creer une socket ecoutant sur le multicast avec un port donnée puis on reçois des datagrampacket pour ensuite les lires. Côtés client on créer un datagramsocket on recupere une InetAdress a partir de l'addresse du multicast et on set sur le datagramPacket les adresses et le port d'écoute.
+
+2) Les étapes pour l'emission sont : L'ouverture d'un datagramSocket la création d'une inetAdress et l'envoie du datagramPacket pour la reception c'est la création du multicast socket et le packet qu'on reçoit.
+
+Exercoce 3 :
+
+1) Pour réaliser un client qui peut recevoir et emetttre des paquets en même temps il faut tous simplement utilser des Threads et lancer ces deux threads dans un main.
+
+2) Ici dans mon cas j'ai utilisé une map qui est associé l'adresse ip de la machin et le nom si la personne n'est pas connu le nom sera "Unknow" si elle est connu elle sera afficher par la hashmap et pour referencer son nom il faut faire un /login <nom> et pour changer ce nom il faut faire un /rlogin <nom> la hasmap est lié par un fichier properties pour garder les noms de machines en mémoire (même si plusieurs personne peut-être sur un même machine mais bon pour cela il faudrait récupérer le nom de login de la personne sur la machine)

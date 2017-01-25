@@ -1,0 +1,8 @@
+(://item[type="BD"][pages>50]/prix--> :)
+(://item[type="BD"][Coloriste][Dessinateur]/titre :)
+(://item[type="BD"][contains(resume, "Far West")]/titre:)
+(://item[serie]/Auteur:)
+(://item[contains(serie,"Minuscule")]/titre:)
+(:count(//item[contains(serie,"Minuscule")]/titre):)
+(://item[serie="Minuscule"][1]/datedeparution:)
+(://item[serie="Minuscule"][position() < 3]/titre:)

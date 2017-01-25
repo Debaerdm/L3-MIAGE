@@ -1,0 +1,93 @@
+# CAPTURE DE TRAMES
+
+1) Cette commande permet de configuer les interfaces réseaux et savoir sur qu'elle réseau nous somme connectés.
+
+2) Les deux interfaces actives sont : eth0 et lo (boucle locale)
+
+3) C'est l'interface eth0
+
+4) IPV4 : 192.168.5.55 et MAC : 98:90:96:bb:7c:da
+
+5) ping 192.168.5.54 il reçois bien les paquets
+
+6) C'est le temps entre l'envoie et la reception du paquet et la reenvoie.
+
+7) Pour justement généraliser un reseau, chaque secteur a son propre réseau (LAN,MAN,WAN) si on utilise l'adresse MAC on aurait du mal a savoir avec qu'elle pc communiquer.
+
+8) C'est le protocol ICMP utilisé ici, les paquets ici est une commande echo envoyé et que la destination renvoie a la source 
+
+9) eth0 : Liaison de donnée
+   ICMP : Reseau
+
+10) Allez dans analyser>filtrages d'affichange>ajouter (le plus) :
+LAN-DISPLAY : (ip.src==192.168.5.55 && ip.dst==192.168.5.54) || (ip.src==192.168.5.54 && ip.dst==192.168.5.55)
+11) 
+LAN-CAPTURE : (src net 192.168.5.55 && dst net 192.168.5.54) || (src net 192.168.5.54 && dst net 192.168.5.55)
+
+# ETHERNET
+
+1) C'est IPV4 : 0x0800
+Son code est : 45 00 00 54 96 cb 00 00 40 01 58 20 c0 a8 05 36 c0 a8 05 37
+
+2) C'est les Sources et les destinations 
+Destination :98 90 96 bb 7c da 
+Source: 98 90 96 bb 80 93
+
+C'est l'adresse MAC 
+
+3) sudo mii-tool eth0 : permet de regarder le status de l'interface et de la carte reseau (Physique)
+
+ethtool eth0 : Permet de controler le driver reseau et la configuration matérielle
+(Physique)
+
+4) La commande mii-tool plante et dis que eth0 n'est pas connecter
+Alors que sur ifconfig -a on voit toujours l'interface eth0 mais pas en "RUNNING"
+
+5) cable droit pour les pc et croiser pour le hub 
+
+sudo route del -net default
+sudo route add default gw 192.168.5.1
+
+# COMMUTATEUR
+
+1) Le 3eme pc connecter voit les paquets envoyés entre les deux autres donc on voit ici que le hub fait bien un broadcast vers tous les machines. Le 3eme pc est comme un spectateur est voit l'information trasiter, je reçois aussi le paquet que je trasmet.
+
+2) Ce mode permet de ne pas afficher les paquets venant des autres interfaces sur le réseaux, par exemple si j'envoie ou je ne reçois pas de paquet je ne verrais rien sur le reseaux.
+
+3) Le mode duplex est : Half, Cela veut dire que l'emetteur envoie un paquet est rajouter du code ASCII 03h pour ETX (end of text) et se met en attente puis le recepteur reçois le paquet et le revoie avec le code ASCII 06h pour ACK (acknowledge) pour signaler qu'il a bien reçu le paquet.
+
+4) La topologie physique est en étoile car chacun de nous est brancher au hub mais la topologie logique est soit anneau sois bus car tous le monde reçois les paquets.
+
+5) Octet reçus : 37.3 MB et Octet transmis (1.9 MB)
+Apres la Manipulation : Octet reçus : 37.3 MB et octet transmis : 2.6 MB (en étant le serveur)
+l'autre manipulation : Octet reçus : 56.3 MB et octet transmis : 13.6 MB (en étant le client)
+
+# CONCENTRATEUR
+
+1) J'envois bien les paquets au recepteur et je reçois bien la confirmation sans que d'autre personne sur le reseau le voie et sans doublon. Le switch fonctionne comme en étoile il envoie vers le recepteur qui doit recevoir le paquet sans envoyer au autres sur le reseau. Non on reçois juste la réponse du recepteur.
+
+2) Il n'y a pas de différence visible.
+
+3) Le mode duplex est : Full, La synchronisation entre le recepteur et l'emteur et le controle de flux est assuré de façon logicielle. Cela marche comme des buffer des qu'il est plein il l'envoie et des qu'il est vide il se réemplie.
+
+4) Les deux topologie que se soit physique et logique sont en étoiles.
+
+5) 
+Bande passante : 
+
+Default :
+Reçus : 66.5 MB
+Transmis : 14.0 MB
+
+Serveur :
+Reçus : 191.3 MB
+Transmis : 16.9 MB
+
+Client :
+Reçus : 194.1 MB
+Transmis : 141.1 MB
+
+# TODO : Manque une 4ème personne pour le hub et switch.
+
+
+ 

@@ -1,0 +1,1348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified" version="1.0">
+  <!--Declaration des types  -->
+  <xs:simpleType name="chaine_numerique_stype">
+    <xs:annotation>
+      <xs:documentation>Création d'un type dérivé de xs:string qui n'accepte que des chiffres</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="[0-9]*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="siren_stype">
+    <xs:annotation>
+      <xs:documentation>Création du type SIREN qui dérive de chaine_numerique_stype avec une longeur fixe de 9</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="chaine_numerique_stype">
+      <xs:whiteSpace value="collapse"/>
+      <xs:minLength value="1"/>
+      <xs:maxLength value="9"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="siret_stype">
+    <xs:restriction base="chaine_numerique_stype">
+      <xs:minLength value="1"/>
+      <xs:maxLength value="14"/>
+      <xs:whiteSpace value="collapse"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="code_pays_ctype">
+    <xs:choice>
+      <xs:element name="iso">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length value="2"/>
+            <xs:whiteSpace value="collapse"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="cfe">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length value="5"/>
+            <xs:whiteSpace value="collapse"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <!--Fin declaration des types  -->
+  <!--Déclaration des structures-->
+  <xs:element name="collaborateur">
+    <xs:annotation>
+      <xs:documentation>Structure générique pour définir un collaborateur de l'établissement</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="identite">
+          <xs:annotation>
+            <xs:documentation>Identification minimale de l'individu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="civilite">
+                <xs:annotation>
+                  <xs:documentation>Notion de sexe dans norme CFE (Telefirm ou CFE)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="telefirm" minOccurs="0">
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:length value="1"/>
+                          <xs:whiteSpace value="collapse"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="cfe" minOccurs="0">
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:length value="1"/>
+                          <xs:whiteSpace value="collapse"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="nom_naissance" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="100"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="prenom" minOccurs="0" maxOccurs="3">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="nom_prenom" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A utiliser pour respecter les contraintes postales (nom + prenom)</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="34"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="complement" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Informations complémentaire sur l'individu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="nom_usage" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="100"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_prise_fonction" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element ref="courriel" minOccurs="0"/>
+              <xs:element ref="telephone" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="fonction">
+          <xs:annotation>
+            <xs:documentation>fonction de l'individu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="telefirm" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="cfe" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:length value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="libelle" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="60"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="responsable">
+    <xs:annotation>
+      <xs:documentation>Structure générique pour définir un dirigeant de l'entreprise</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="identite">
+          <xs:annotation>
+            <xs:documentation>Identification minimale de l'individu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="civilite" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Notion de sexe dans norme CFE (Telefirm ou CFE)</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="telefirm" minOccurs="0">
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:length value="1"/>
+                          <xs:whiteSpace value="collapse"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="cfe" minOccurs="0">
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:length value="1"/>
+                          <xs:whiteSpace value="collapse"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="nom_naissance" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A renseigner obligatoirement si le nom d'usage n'est pas renseigné</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="100"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="prenom" minOccurs="0" maxOccurs="3">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="nom_prenom" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A utiliser pour respecter les contraintes postales (nom + prenom)</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="34"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_naissance" type="xs:date" minOccurs="0"/>
+              <xs:element name="nationalite" type="code_pays_ctype" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Représenté par un code pays</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="complement" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Informations complémentaire sur l'individu</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="nom_usage" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A renseigner obligatoirement si le nom de naissance n'est pas renseigné</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="100"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_prise_fonction" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element ref="courriel" minOccurs="0"/>
+              <xs:element ref="telephone" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="fonction">
+          <xs:annotation>
+            <xs:documentation>fonction de l'individu - Utiliser une des trois normes</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="telefirm" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="cfe" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:length value="2"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="libelle" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="60"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="nature" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Nature de la personne</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="nature_personne" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>P ou M -&gt; physique ou morale (faire un pattern)</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:length value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="siren" type="siren_stype" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Lien vers l'entité juridique correspondante</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="courriel">
+    <xs:annotation>
+      <xs:documentation>Adresse e-mail -- -- todo pattern de validation</xs:documentation>
+    </xs:annotation>
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:whiteSpace value="collapse"/>
+        <xs:minLength value="5"/>
+        <xs:maxLength value="80"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="telephone">
+    <xs:annotation>
+      <xs:documentation>Norme E.164</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="code_pays" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>ex: 33 (indicatif FRANCE)</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="chaine_numerique_stype">
+              <xs:whiteSpace value="collapse"/>
+              <xs:minLength value="1"/>
+              <xs:maxLength value="3"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="code_national" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>ex: 1 2 3 4 5 6 (prefixe regional en France)</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="chaine_numerique_stype">
+              <xs:whiteSpace value="collapse"/>
+              <xs:minLength value="1"/>
+              <xs:maxLength value="3"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="numero" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>8 derniers chiffres du numero</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="chaine_numerique_stype">
+              <xs:whiteSpace value="collapse"/>
+              <xs:minLength value="1"/>
+              <xs:maxLength value="9"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="entreprise">
+    <xs:annotation>
+      <xs:documentation>Liste d'établissements + infos liés à l'entreprise </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="identite">
+          <xs:annotation>
+            <xs:documentation>Informations générales sur l'entreprise</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="denomination" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Nom et prenom exploitant pour PP et denom pour les PM</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="120"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="raison_sociale">
+                <xs:annotation>
+                  <xs:documentation>Dénomination dans un format plus court</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="38"/>
+                    <xs:minLength value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="sigle" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="nom_commercial" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="100"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="capital_social" type="xs:decimal" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>en euros + token pour gérer les float fr</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="devise_capital_social" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A renseigner seulement si différent de €</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="3"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="forme_juridique">
+                <xs:annotation>
+                  <xs:documentation>Choix entre norme CFE et table telefirm</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="telefirm">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:length value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="cfe">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                          <xs:minInclusive value="1"/>
+                          <xs:maxInclusive value="9999"/>
+                          <xs:whiteSpace value="collapse"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="code_apen" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="4"/>
+                    <xs:maxLength value="6"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="appartenance_groupe" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Faire un pattern booleen</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="code_pays_groupe" type="code_pays_ctype" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>norme iso 3266  + fiche 22 CFE</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="date_creation" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_mise_a_jour">
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="siren" use="required">
+              <xs:simpleType>
+                <xs:restriction base="siren_stype"/>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="effectif" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>effectif de l'entreprise</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="tranche_effectif" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Table Telefirm </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="2"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="effectif_entreprise" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A renseigner de preference pour plus de finesse</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:integer">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999999"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_mise_a_jour" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A renseigner dans la mesure  du possible pour pouvoir hiostoriser</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="financier" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Différentes infos sur le CA de l'entreprise</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="tranche_ca" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Tranche Telefirm</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ca_national" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ca_export" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ca_produit" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ca_service" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="devise_ca" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="3"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_mise_a_jour" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Faut-il une date de mise a jour pour tout les CA?</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="dirigeants" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Dirigeants de l'entreprise</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="responsable" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="evenement" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="etablissement" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="etablissement">
+    <xs:annotation>
+      <xs:documentation>Conteneur des différents volets décrivant un établissement </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="identite">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="code_cci">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="2"/>
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="enseigne" minOccurs="0" maxOccurs="3">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="38"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="statut">
+                <xs:annotation>
+                  <xs:documentation>Norme CFE ou table Telefirm</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="telefirm">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:length value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="cfe">
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:length value="1"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="rcs" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="10"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="nature_activite" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Nature d'activité: ex import, libelle ou norme CFE</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="lieu_exercice_activite" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Choix entre norme CFE et table telefirm</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="telefirm">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:length value="1"/>
+                          <xs:whiteSpace value="collapse"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="cfe">
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:whiteSpace value="collapse"/>
+                          <xs:minLength value="1"/>
+                          <xs:maxLength value="2"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="categorie">
+                <xs:annotation>
+                  <xs:documentation>I, C, S: industrie, commerce, societe -- faire un pattern</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:length value="1"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_debut_activite">
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element ref="courriel" minOccurs="0"/>
+              <xs:element name="site_web" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Le modèle de la base ne permet pas d'en gérer plusieurs -- todo pattern</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="3"/>
+                    <xs:maxLength value="80"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_mise_a_jour">
+                <xs:simpleType>
+                  <xs:restriction base="xs:date">
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="siret" type="siret_stype" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="activite">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="activite_principale">
+                <xs:annotation>
+                  <xs:documentation>code APE</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="4"/>
+                    <xs:maxLength value="6"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="activite_secondaire" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Représenté par un NAF4</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="4"/>
+                    <xs:maxLength value="6"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="activite_saisonniere" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Booleen -&gt; si non, activité permanente</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:length value="1"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="principale_activite_en_clair" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Permet de préciser l'activité principale</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="150"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="effectif">
+          <xs:annotation>
+            <xs:documentation>Renseigner au moins l'un des deux</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="effectif_etablissement" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A renseigner de preference</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:integer">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999999"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="tranche_effectif" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>tranche telefirm </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="date_mise_a_jour" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A renseigner dans la mesure du possible pour pouvoir historiser</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="adresse">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="numero_voie" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Phy : numero d'identification - Possibilité de gérer les intervalles par -</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="9"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="indice_repetition" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>A, B, T, Q, C</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:length value="1"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="type_voie" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Genre de la voie</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="4"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="libelle_voie" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Phy : Appelation de la voie - a utiliser avec l'adresse décomposée</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="38"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="nom_voie" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Champ à usage marketing direct: num + type + nom voie </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="38"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="localisation" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Phy : Ce qu'il faut savoir pour trouver la porte de l'établissement</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="38"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="code_postal">
+                <xs:annotation>
+                  <xs:documentation>Pos: servant a l'acheminement du courrier</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="4"/>
+                    <xs:maxLength value="5"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="localite" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pos: localite du destinataire = bureau distributeur - Si différent code commune ou libellé CEDEX</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="32"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="mention_distribution" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Pos : Lieu où le destinataire prend possession de son courrier (type(3) +libellé(8))</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="11"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="code_pays" type="code_pays_ctype" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Norme ISO 3166: Pos: Pays du destinataire</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+              <xs:element ref="telephone" minOccurs="0"/>
+              <xs:element name="telecopie" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Norme E.164</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code_pays" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>ex: 33 (indicatif FRANCE)</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:whiteSpace value="collapse"/>
+                          <xs:minLength value="1"/>
+                          <xs:maxLength value="3"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="code_national" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>ex: 0 (prefixe FRANCE)</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:whiteSpace value="collapse"/>
+                          <xs:minLength value="1"/>
+                          <xs:maxLength value="3"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="numero" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>9 chiffres du numero</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:whiteSpace value="collapse"/>
+                          <xs:minLength value="1"/>
+                          <xs:maxLength value="9"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="code_rivoli" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>identifiant des voies par communes</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="4"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="code_commune">
+                <xs:annotation>
+                  <xs:documentation>Norme INSEE</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="4"/>
+                    <xs:maxLength value="5"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="code_canton">
+                <xs:annotation>
+                  <xs:documentation>Norme INSEE</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:length value="2"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="code_departement" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>Norme INSEE</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:whiteSpace value="collapse"/>
+                    <xs:minLength value="2"/>
+                    <xs:maxLength value="3"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="code_region" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="chaine_numerique_stype">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="2"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="departement_siege" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="2"/>
+                    <xs:maxLength value="3"/>
+                    <xs:whiteSpace value="collapse"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="quartier_tri" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="4"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="collaborateur" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="infos_economiques" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Modèle non définitif</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="produit_service" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code_produit"/>
+                    <xs:element name="libelle_produit"/>
+                    <xs:element name="code_service"/>
+                    <xs:element name="libelle_service"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="moyen_equipement" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code_machine"/>
+                    <xs:element name="libelle_machine"/>
+                    <xs:element name="code_logistique"/>
+                    <xs:element name="libelle_logistique"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="savoir_faire" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code"/>
+                    <xs:element name="libelle"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="surface_economique" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>Info sur la surface commerciale</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code_type_surface">
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:minLength value="1"/>
+                          <xs:maxLength value="2"/>
+                          <xs:whiteSpace value="collapse"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="libelle_type_surface">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:minLength value="1"/>
+                          <xs:maxLength value="80"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="surface">
+                      <xs:annotation>
+                        <xs:documentation>Surface en M²</xs:documentation>
+                      </xs:annotation>
+                      <xs:simpleType>
+                        <xs:restriction base="chaine_numerique_stype">
+                          <xs:whiteSpace value="collapse"/>
+                          <xs:minLength value="1"/>
+                          <xs:maxLength value="6"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="marque" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>Voir marque déposé et déposé</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code"/>
+                    <xs:element name="libelle"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="certification" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="code"/>
+                    <xs:element name="libelle"/>
+                    <xs:element name="etat"/>
+                    <xs:element name="domaine_activite"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="co_traitance" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="preneur_ordres"/>
+                    <xs:element name="donneur_ordres"/>
+                    <xs:element name="activite_client"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="import_export" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="produit"/>
+                    <xs:element name="zone_geographique"/>
+                    <xs:element name="mode_distribution"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="recherche_developpement" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="brevets_deposees"/>
+                    <xs:element name="brevets_exploitees"/>
+                    <xs:element name="service_etude"/>
+                    <xs:element name="labo_recherche"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="evenement" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="evenement">
+    <xs:annotation>
+      <xs:documentation>Evenement lié à l'entreprise</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="date_notification" type="xs:date"/>
+        <xs:element name="code_evenement">
+          <xs:annotation>
+            <xs:documentation>Se référer au cahier des charges des champs de données</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="chaine_numerique_stype">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="2"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="type_evenement">
+          <xs:annotation>
+            <xs:documentation>AEF_juridique ou AEF_financier par exemple</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:minLength value="1"/>
+              <xs:maxLength value="30"/>
+              <xs:whiteSpace value="collapse"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:documentation>Fin déclaration des structures</xs:documentation>
+  </xs:annotation>
+  <xs:annotation>
+    <xs:documentation>Déclaration des mouvements</xs:documentation>
+  </xs:annotation>
+  <xs:element name="creation">
+    <xs:annotation>
+      <xs:documentation>Création d'une entreprise ou d'un etablissement</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="entreprise"/>
+        <xs:element ref="etablissement"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="modification">
+    <xs:annotation>
+      <xs:documentation>Modification d'une entreprise ou d'un etablissement</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="entreprise"/>
+        <xs:element ref="etablissement"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="suppression">
+    <xs:annotation>
+      <xs:documentation>Suppression d'un etablissement ou d''une entreprise</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence maxOccurs="unbounded">
+        <xs:element name="identite">
+          <xs:complexType>
+            <xs:attribute name="siret" type="siret_stype" use="optional"/>
+            <xs:attribute name="siren" type="siren_stype" use="optional"/>
+            <xs:attribute name="mode" use="optional" default="cascade">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:whiteSpace value="collapse"/>
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:annotation>
+    <xs:documentation>Fin déclaration des mouvements</xs:documentation>
+  </xs:annotation>
+</xs:schema>

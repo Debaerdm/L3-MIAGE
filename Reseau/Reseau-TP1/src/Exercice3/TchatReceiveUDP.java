@@ -50,7 +50,7 @@ public class TchatReceiveUDP extends Thread {
 				String line = new String(data.getData(), data.getOffset(), data.getLength());
 
 				this.login(line, data);
-				this.relogin(line, data);
+				this.rlogin(line, data);
 
 				String hostAdress = data.getAddress().getHostAddress();
 
@@ -84,7 +84,7 @@ public class TchatReceiveUDP extends Thread {
 		}
 	}
 
-	private void relogin(String line, DatagramPacket data) throws IOException {
+	private void rlogin(String line, DatagramPacket data) throws IOException {
 		// Permet de changer son login
 		if(line.startsWith("/rlogin ")) {
 			String tmp = line.substring("/rlogin ".length(), line.length());
