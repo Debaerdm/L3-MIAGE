@@ -101,4 +101,42 @@ Transmis : 141.1 MB
 
 6) Elles sont différentes car vers le poste 3 il passe un noeud en plus donc il décrémente de 1 qui vaut donc 63 alors que sur le poste 2 il vaut 64. Il permet de savoir par ou il passe le paquet, il permet aussi de savoir le temps de vie du paquet et si au bout de 3 sec ou un certain moment le TTL est décrémenter
 
-7)  
+7) La valeur du TTL pour communiquer avec le poste 2 c'est 1 sinon on peut communiquer avec le poste 3. Il faut au minimun 2 ttl pour communiquer avec le poste 3 (ping -t 2 192.168.1.100) et pour le poste 2 il faut au minimun : ping -t 1 192.168.1.54. On a pas de retour du packet (error : Time to live exceeded).
+
+8) 
+
+Sur le poste 1 :
+Addresse Source : (98:90:96:bb:7c:da)
+Addresse Destination : (00:21:55:dd:f8:40)
+
+Sur le poste 3:
+Addresse Source : (00:21:55:dd:f8:41)
+Addresse Destination : (98:90:96:bb:80:83)
+
+La trame envoyer du poste 1 est envoyé a l'interface 0/0 est la source du poste 3 est l'interface 0/1 
+(du routeur)
+
+9) C'est grâce a la route qu'on a mis sur chaque poste qui est liér au routeur par l'addresse 192.168.1.200/24
+
+10) Feuille
+
+11) Le poste 1 et 2 reçoit les packets alors que que le poste 3 ne reçoit rien.
+
+12) Le poste 1 et 2 ne reçoivent pas les packets du poste 3.
+
+13) Le poste 3 arrivait a envoyer les paquets vers les deux autre postes.
+
+14)
+
+Dirigé : Elle n'est utilisée qu'en adresse de destination. Elle indique que le paquet est à destionation de toutes les machines du réseau identifié par la partie réseau de l'adresse. Elle est transférée par les routeurs jusqu'au réseau de destination.
+
+Limité : Elle n'est utilisé qu'en adresse de destination. Elle indique que le paquet est à destination de toutes les machines du réseau sur lequel il est émis. Ces paquets ne sont pas transférés par les routeurs ils restent dans leurs réseaux physiques d'émission.
+
+Unicast : Le terme unicast définit une connexion réseau point à point, c'est-à-dire d'un hôte vers un (seul) autre hôte.
+
+15) 
+
+
+## ARP
+
+
