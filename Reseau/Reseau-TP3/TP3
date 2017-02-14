@@ -1,0 +1,43 @@
+Question 1:
+
+a: lien entre le routeur1 et le routeur2
+b: lien entre le routeur1 et le routeur3
+A: lien entre le routeur2 et les machines A
+B: lien entre le routeur3 et les machines B
+
+Pour un réseau minimal dans les liens a et b il faut :
+
+A : 192.168.5.0/25 -> 192.168.5.127/25
+A : 255.255.255.128
+
+B : 192.168.5.128/26 -> 192.168.5.191/26
+B : 255.255.255.192
+
+a : 192.168.5.192/30 -> 192.168.5.195/30
+a : 255.255.255.252
+
+b : 192.168.5.196/30 -> 192.168.5.199/30
+b : 255.255.255.252
+
+2)
+minicom
+enable
+configure terminal
+interface gigabyteEthernet 0/0
+    ip address 211.230.193.198 255.255.255.252
+    no shutdown
+    exit
+interface gigabyteEthernet 0/1
+    ip address 211.230.193.129 255.255.255.192
+    no shutdown
+    exit
+ip routing
+
+3) 
+sudo ifconfig eth0 211.230.193.142/26
+
+interface 0/1 du routeur : 
+sudo route add default gw 211.230.193.129
+
+
+
